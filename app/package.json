@@ -1,5 +1,5 @@
 {
-  "name": "lightning twitter",
+  "name": "lightningtwitter",
   "version": "1.0.0",
   "description": "twitter ad platform powered by lightning network",
   "main": "index.js",
