@@ -1,0 +1,11 @@
+ul,li {
+	list-style: none;
+}
+.payment_request {
+	width: 400px;
+}
+
+.thumbnail {
+	width: 100px;
+	border-radius: 100px;
+}

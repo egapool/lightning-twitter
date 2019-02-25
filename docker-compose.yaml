@@ -1,0 +1,50 @@
+version: '3'
+services:
+  bitcoin-core:
+    build: 0.17/alpine
+    container_name: bitcoin-server
+    command:
+      -printtoconsole
+      -regtest=1
+      -deprecatedrpc=accounts
+      -rpcuser="devuser"
+      -rpcpassword="devpass"
+      -rpcallowip=0.0.0.0/0
+      -zmqpubrawblock=tcp://0.0.0.0:28332
+      -zmqpubrawtx=tcp://0.0.0.0:28333
+  lnd: &lnd
+    build: lnd
+    container_name: lnd
+    environment:
+      - RPCUSER
+      - RPCPASS
+      - NETWORK
+      - DEBUG
+      - ZMQBLOCKPORT
+      - ZMQTXPORT
+    links:
+        - "bitcoin-core:blockchain"
+        - "mysql:mysql_host"
+  alice:
+    <<: *lnd
+    container_name: alice
+    volumes:
+      - "./app:/root/app"
+    # command: bash -c "cd /root/app && npm i && npm run start"
+    entrypoint: ["./start-lnd.sh"]
+    ports:
+      - 8000:3000
+  bob:
+    <<: *lnd
+    container_name: bob
+    entrypoint: ["./start-lnd.sh"]
+  mysql:
+    image: mysql:5.7
+    container_name: mysql57
+    hostname: mysql
+    command: mysqld --character-set-server=utf8 --collation-server=utf8_unicode_ci
+    ports:
+      - "3306:3306"
+    environment:
+      - "MYSQL_ROOT_PASSWORD=root"
+      - "MYSQL_DATABASE=root"

@@ -1,0 +1,67 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Lightning Twitter</title>
+    <link rel="stylesheet" href="/style.css">
+  </head>
+  <body>
+    <header>
+      <h1>Lightning Twitter</h1>
+    </header>
+    <div id="app">
+      <p class="register"><a href="/auth/twitter">投稿者として登録</a></p>
+      <ul class="accounts">
+        <% for (let user of users) { %>
+        <li>
+          <p class="user_name">@<%- user.screen_name %>(<%- user.display_name %>)</p>
+          <p>
+            <img class="thumbnail" src="https://pbs.twimg.com/profile_images/1083371766817349633/_XhJUDEn_400x400.jpg" alt="">
+          </p>
+          <form class="invoice-submit" action="/getInvoice">
+            <input type="hidden" name="user_id" value="<%- user.id %>">  
+            <textarea name="tweet" cols="60" rows="4" placeholder="input your tweet.."></textarea>
+            <button>投稿</button>
+          </form>
+        </li>
+        <% } %>
+      </ul>
+      <div id="area"></div>
+      
+    </div>
+  <script src="/socket.io/socket.io.js"></script>
+  <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
+  <script src="https://momentjs.com/downloads/moment.min.js"></script>
+  <script>
+        
+    $(function () {
+      let myInvoice
+      const socket = io();
+      $('.invoice-submit button').click(e =>{
+        const $form = $(e.target).parents('form');
+        $.ajax({
+          method: 'POST',
+          url: '/getInvoice',
+          data: $form.serialize()
+        })
+        .then(
+          data => {
+            $('#area').html('<p><img src="'+data.qr+'"></p><p class="payment_request">'+data.payment_request+'</p>')
+            myInvoice = data.payment_request
+          },
+          err => console.log(err)
+        )
+        e.preventDefault()
+      })
+      socket.emit('get_invoice', {
+      })
+      socket.on('invoice_done', msg => {
+        if (msg.payReq === myInvoice) {
+          console.log('支払い完了!')
+          console.log(msg)
+          $('#area').html('<p class="done">' + msg.value + ' satoshi 支払い完了♪</p>')
+        }
+      })
+    });
+  </script>
+  </body>
+</html>
