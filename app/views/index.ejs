@@ -9,7 +9,14 @@
       <h1>Lightning Twitter</h1>
     </header>
     <div id="app">
-      <p class="register"><a href="/auth/twitter">投稿者として登録</a></p>
+      <p class="register"><a href="/auth/twitter">投稿者として登録(ログイン)</a></p>
+      <% if (loginUser) { %>
+      <div class="remove">
+        <form action="/remove" method="POST">
+          <button>投稿者をやめる</button>
+        </form>
+      </div>
+      <% } %>
       <ul class="accounts">
         <% for (let user of users) { %>
         <li>

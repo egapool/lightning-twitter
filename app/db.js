@@ -78,7 +78,19 @@ const getUsers = async (done) => {
       done(res)
     }
   })
+}
 
+const removeUser = async (tw_id, done) => {
+  console.log(tw_id)
+  connection.query("DELETE FROM users WHERE tw_id = ?", [tw_id], (error,results,fields) => {
+    if (error) {
+      console.log(error)
+      return error
+    }
+    if (done) {
+      done()
+    }
+  });
 }
 module.exports = {
   register: register,
@@ -87,4 +99,5 @@ module.exports = {
   updateTweet: updateTweet,
   getUser: getUser,
   getUsers: getUsers,
+  removeUser: removeUser,
 }

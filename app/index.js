@@ -63,8 +63,7 @@ const server = http.listen(3000, function(){
 
 app.get("/", function(req, res, next){
   db.getUsers((users) => {
-    console.log(users)
-    res.render('index.ejs',{users:users});
+    res.render('index.ejs',{users:users,loginUser:req.user});
   })
 });
 
@@ -104,6 +103,17 @@ app.post("/getInvoice", async (req, response, next) => {
   });
 });
 
+app.post("/remove", async (req, response, next) => {
+  // db.remove
+  if (req.user) {
+    db.removeUser(req.user.id, () => {
+      // response.redirect('/')
+    })
+  }
+  req.logout();
+  response.redirect('/')
+})
+
 app.get("/getInfo", async (req, response, next) => {
   client.getInfo({}, async (err, res) => {
     response.json(res);
@@ -131,6 +141,7 @@ const postTweet = async (tweet) => {
       access_token_key: user.access_token,
       access_token_secret: user.access_token_secret
     });
+    tweet.tweet += "\nTweet by https://lntw.me #lntw"
     const params = {
       status: tweet.tweet,
     }
