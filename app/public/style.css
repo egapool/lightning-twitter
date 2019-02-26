@@ -9,3 +9,6 @@ ul,li {
 	width: 100px;
 	border-radius: 100px;
 }
+.accounts li {
+	display: inline-block;
+}

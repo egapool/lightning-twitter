@@ -37,6 +37,7 @@ passport.use(new TwitterStrategy({
           profile.id,
           profile.username,
           profile.displayName,
+          profile._json.profile_image_url,
           1,
           accessToken,
           accessTokenSecret
@@ -82,7 +83,7 @@ app.post("/getInvoice", async (req, response, next) => {
     }
   }
   const pay_req = {
-    value: 100
+    value: 10
   }
   client.addInvoice(pay_req, async (err, res) => {
     console.log(res)

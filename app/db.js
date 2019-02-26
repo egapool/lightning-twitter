@@ -8,19 +8,18 @@ var connection = mysql.createConnection({
   database: config.get("db.database")
 });
 
-const register = async (tw_id, user_name, display_name, is_poster, access_token, access_token_secret) => {
-  const param = [tw_id, user_name, display_name, is_poster, access_token, access_token_secret]
+const register = async (tw_id, user_name, display_name,normal_photo, is_poster, access_token, access_token_secret) => {
+  const photo = normal_photo.replace('normal','400x400')
+  const param = [tw_id, user_name, display_name, photo, is_poster, access_token, access_token_secret]
   connection.query("select * from users where tw_id = ?",[tw_id], (err,res,fields) => {
     if (res.length == 0) {
-      connection.query("insert into users (`tw_id`,`screen_name`,`display_name`,`is_poster`,`access_token`,`access_token_secret`,created_at) values (?,?,?,?,?,?, now())", param, (error,results,fields) => {
+      connection.query("insert into users (`tw_id`,`screen_name`,`display_name`,`photo`,`is_poster`,`access_token`,`access_token_secret`,created_at) values (?,?,?,?,?,?,?, now())", param, (error,results,fields) => {
         if (error) {
           console.log(error)
           return error
         }
-        // console.log(error,results,fields)
       });
-    }    // console.log(err,res)
-
+    }
   })
 }
 

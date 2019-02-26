@@ -1,12 +1,13 @@
 <!doctype html>
 <html>
   <head>
-    <title>Lightning Twitter</title>
+    <title>(β)Lightning Twitter</title>
     <link rel="stylesheet" href="/style.css">
   </head>
   <body>
     <header>
-      <h1>Lightning Twitter</h1>
+      <h1>(β)Lightning Twitter</h1>
+      <p class="lead">自分のアカウントからつぶやかれても良い人は「投稿者として登録(ログイン)」してください。投稿者につぶやかせたい人はログインする必要はありません。</p>
     </header>
     <div id="app">
       <p class="register"><a href="/auth/twitter">投稿者として登録(ログイン)</a></p>
@@ -20,9 +21,9 @@
       <ul class="accounts">
         <% for (let user of users) { %>
         <li>
-          <p class="user_name">@<%- user.screen_name %>(<%- user.display_name %>)</p>
+          <p class="user_name"><a href="https://twitter.com/<%- user.screen_name %>" target="_one">@<%- user.screen_name %>(<%- user.display_name %>)</a></p>
           <p>
-            <img class="thumbnail" src="https://pbs.twimg.com/profile_images/1083371766817349633/_XhJUDEn_400x400.jpg" alt="">
+            <img class="thumbnail" src="<%- user.photo %>" alt="">
           </p>
           <form class="invoice-submit" action="/getInvoice">
             <input type="hidden" name="user_id" value="<%- user.id %>">  
