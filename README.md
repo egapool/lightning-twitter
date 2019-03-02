@@ -1,5 +1,18 @@
 # Lightning Twitter
 
+## todo
+- [ ] フロントをvue化する
+- [ ] nodejsとLN(alice)を分離する
+- [ ] README整理する
+- [ ] 投稿者の最新の #lntw 投稿を表示
+- [ ] #lntw 全体の投稿も表示
+- [ ] DBスキーマファイル
+
+**more**
+
+- [ ] 登録時に受け付けるsatoshiを変更できるように
+- [ ] 払い出し機能つける
+
 ## bitcoind docker
 Origin README [uimarinho/docker-bitcoin-core's README](https://github.com/ruimarinho/docker-bitcoin-core/blob/master/README.md)
 
